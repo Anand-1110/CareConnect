@@ -1,4 +1,4 @@
-import jwt from'jsonwebtoke'
+import jwt from'jsonwebtoken'
 
 
 // admin authentication midddleware
