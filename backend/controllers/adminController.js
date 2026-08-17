@@ -8,8 +8,13 @@ import jwt from "jsonwebtoken"
 //API for adding doctor
 const addDoctor = async (req,res) => {
     try {
+
+        console.log("ADD DOCTOR CONTROLLER REACHED")
         const { name, email, password, speciality, degree, experience, about, fees, address} = req.body
         const imageFile = req.file
+
+        console.log("BODY:", req.body)
+        console.log("FILE:", req.file)
 
         // checking for all data to add doctor
         if(!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address){
@@ -31,8 +36,10 @@ const addDoctor = async (req,res) => {
         const hashedPassword = await bcrypt.hash(password, salt)
 
         // upload image to cloudinary
+        console.log("STARTING CLOUDINARY UPLOAD")
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, {resource_type:"image"})
         const imageUrl = imageUpload.secure_url
+        console.log("CLOUDINARY UPLOAD SUCCESS")
 
         const doctorData = {
             name,
@@ -47,9 +54,10 @@ const addDoctor = async (req,res) => {
             address:JSON.parse(address),
             date:Date.now()
         }
-
+        console.log("CREATING DOCTOR")
         const newDoctor = new doctorModel(doctorData)
         await newDoctor.save()
+        console.log("DOCTOR SAVED TO MONGODB")
 
         res.json({success:true,message:"Doctor Added"})
 

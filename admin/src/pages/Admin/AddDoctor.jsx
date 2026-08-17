@@ -2,6 +2,7 @@ import React, { useState,useContext } from 'react'
 import { assets } from '../../assets/assets'
 import { AdminContext } from '../../context/AdminContext'
 import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const AddDoctor = () => {
 
@@ -17,7 +18,7 @@ const AddDoctor = () => {
     const [address1,setAddress1] = useState('')
     const [address2,setAddrees2] = useState('')
 
-    const { backendUrl, aToken } = useContext(AdminContext)
+    const { backendurl, aToken } = useContext(AdminContext)
 
     const onSubmitHandler = async (event) => {
         event.preventDefault()
@@ -28,9 +29,42 @@ const AddDoctor = () => {
 
             const formData = new FormData()
 
+            formData.append('image',docImg)
+            formData.append('name',name)
+            formData.append('email',email)
+            formData.append('password',password)
+            formData.append('experience',experience)
+            formData.append('fees',fees)
+            formData.append('about',about)
+            formData.append('speciality',speciality)
+            formData.append('degree',degree)
+            formData.append('address',JSON.stringify({line1:address1,line2:address2}))
+
+            //console log form data
+            formData.forEach((value,key)=>{
+                console.log(`${key} : ${value}`);
+            })
             
+            const {data} = await axios.post(backendurl + '/api/admin/add-doctor',formData, {headers:{aToken}})
+
+            if(data.success) {
+                toast.success(data.message)
+                setDocImg(false)
+                setName('')
+                setPassword('')
+                setEmail('')
+                setAddress1('')
+                setAddrees2('')
+                setDegree('')
+                setAbout('')
+                setFees('')
+            } else {
+                toast.error(data.message)
+            }
 
         } catch (error) {
+          toast.error(error.message)
+          console.log(error)
 
         }
     }
@@ -112,7 +146,7 @@ const AddDoctor = () => {
         </div>
         <div>
             <p className='mt-4 mb-2'>About Doctor</p>
-            <textarea onChange={(e) => setAbout(e.target.value)} value={about} className='w-full px-4 pt-2 border rounded' placeholder='write about doctor' row={5} required/>
+            <textarea onChange={(e) => setAbout(e.target.value)} value={about} className='w-full px-4 pt-2 border rounded' placeholder='write about doctor' row={6} required/>
         </div>
         <button type='submit' className='bg-primary px-10 py-3 mt-4 text-white rounded-full'>Add doctor</button>
     </div>

@@ -7,6 +7,7 @@ const AdminContextProvider = (props) => {
         const [aToken,setAToken] = useState(localStorage.getItem('aToken') ? (localStorage.getItem('aToken')) : '')
 
         const backendurl = import.meta.env.VITE_BACKEND_URL
+        console.log("BACKEND URL =", backendurl)
         
         const value = {
             aToken,setAToken,

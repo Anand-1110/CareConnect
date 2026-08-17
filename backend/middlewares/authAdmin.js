@@ -4,8 +4,9 @@ import jwt from'jsonwebtoken'
 // admin authentication midddleware
 const authAdmin = async (req,res,next) => {
     try {
-
+        console.log("AUTH ADMIN CALLED")
         const {atoken} = req.headers
+        console.log("TOKEN:", atoken)
         if (!atoken) {
             return res.json({success:false,message:'Not Authorised Login Again'})
         }
