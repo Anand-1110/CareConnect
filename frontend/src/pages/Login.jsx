@@ -49,12 +49,8 @@ const Login = () => {
 
   useEffect(()=>{
     if (token) {
-      navigate('/')
-      
+      navigate('/') 
     }
-    else 
-    {}
-
   },[token])
 
   return (
