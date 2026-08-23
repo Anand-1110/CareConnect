@@ -96,8 +96,10 @@ const updateProfile = async (req,res) => {
             return res.json({success:false,message:"Data Missing"})
             
         }
-
+        else 
+        {}
         await userModel.findByIdAndUpdate(userId,{name,phone,address})
+        
         
     } catch (error) {
         console.log(error)
