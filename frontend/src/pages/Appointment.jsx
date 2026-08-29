@@ -105,7 +105,7 @@ const Appointment = () => {
             if (data.success) {
                 toast.success(data.message)
                 getDoctorsData()
-                navigate('/my-appointment')
+                navigate('/my-appointments')
                 
             } else {
                 toast.error(data.message)
@@ -124,7 +124,9 @@ const Appointment = () => {
     },[doctors,docId])
 
     useEffect(()=>{
+        if (docInfo) {
         getAvailablSlots()
+    }
     },[docInfo])
 
     useEffect(()=>{

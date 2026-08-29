@@ -176,7 +176,7 @@ const bookAppointment = async (req,res) => {
 const listAppointment = async (req,res) => {
     try {
 
-        const {userId} = req.id
+        const userId = req.userId
         const appointments = await appointmentModel.find({userId})
 
         res.json({success:true,appointments})
@@ -188,5 +188,38 @@ const listAppointment = async (req,res) => {
     }
 }
 
+//API to cancel appointment
+const cancelAppointment = async (req,res) => {
+    try {
+        const userId = req.userId
+        const {apppintmentId} = req.body        
+        
+        const appointmentData = await appointmentModel.findById(appointmentId)
 
-export {registerUser,loginUser,getProfile,updateProfile,bookAppointment,listAppointment}
+        if(appointmentData.userId !== userId) {
+            return res.json({success:false,message:'nauthorised'})
+        }
+
+        await appointmentModel.findByIdAndUpdate(apppintmentId, {cancelled:true})
+        // releasing doctor slot
+
+        const {docId,slotDate,slotTime} = appointmentData
+        const doctorData = await doctorModel.findById({docId})
+
+        let slots_booked = doctorData.slots_booked
+
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e!== slotTime)
+
+        await doctorModel.findByIdAndUpdate(docId, {slots_booked})
+
+        res.json({success:true, message:'Appointment Cancelled'})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+
+export {registerUser,loginUser,getProfile,updateProfile,bookAppointment,listAppointment,cancelAppointment}
