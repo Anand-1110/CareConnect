@@ -192,19 +192,19 @@ const listAppointment = async (req,res) => {
 const cancelAppointment = async (req,res) => {
     try {
         const userId = req.userId
-        const {apppintmentId} = req.body        
+        const {appointmentId} = req.body        
         
         const appointmentData = await appointmentModel.findById(appointmentId)
 
         if(appointmentData.userId !== userId) {
-            return res.json({success:false,message:'nauthorised'})
+            return res.json({success:false,message:'Unauthorised'})
         }
 
-        await appointmentModel.findByIdAndUpdate(apppintmentId, {cancelled:true})
+        await appointmentModel.findByIdAndUpdate(appointmentId, {cancelled:true})
         // releasing doctor slot
 
         const {docId,slotDate,slotTime} = appointmentData
-        const doctorData = await doctorModel.findById({docId})
+        const doctorData = await doctorModel.findById(docId)
 
         let slots_booked = doctorData.slots_booked
 
