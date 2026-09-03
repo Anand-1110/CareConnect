@@ -29,4 +29,8 @@ const doctorList = async (req,res) => {
     }
 }
 
+
+//API for doctor login
+
+
 export {changeAvailability,doctorList}
