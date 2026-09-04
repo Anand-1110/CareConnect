@@ -1,5 +1,5 @@
 import doctorModel from "../models/doctorModel.js"
-
+import bcrypt from 'bcrypt'
 
 
 
@@ -26,11 +26,28 @@ const doctorList = async (req,res) => {
         
     } catch (error) {
          console.log(error)
+         res.json({success:false,message:error.message})
     }
 }
 
 
 //API for doctor login
+const loginDoctor = async (req,res) => {
+    try {
+        const {email,password} = req.body
+        const doctor = await doctorModel.findOne({email})
+        if (!doctor) {
+            return res.json({success:false,message:'Invalid Credentials'})
+            
+        }
 
+        const isMatch = await bcrypt.compare(password,)
+        
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+        
+    }
+}
 
 export {changeAvailability,doctorList}
