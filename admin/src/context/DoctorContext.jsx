@@ -12,6 +12,7 @@ const DoctorContextProvider = (props) => {
         const [dToken, setDToken] = useState(localStorage.getItem('dToken') ? (localStorage.getItem('dToken')) : '')
         const [appointments,setAppointments] = useState([])
         const [dashData,setDashData] = useState(false)
+        const [profileData,setProfileData] = useState(false)
 
         const getAppointments = async () => {
             try {
