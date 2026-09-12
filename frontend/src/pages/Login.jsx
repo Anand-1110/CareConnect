@@ -42,7 +42,8 @@ const Login = () => {
       }
 
     } catch (error) {
-      toast.error(data.message)
+      console.log(error)
+      toast.error(error.message)
       
     }
   }
@@ -59,19 +60,19 @@ const Login = () => {
           <p className='text-2xl font-semibold'>{state === 'Sign Up' ? "Create Account" : "Login"}</p>
           <p>Please {state === 'Sign Up' ? "sign up" : "log in"} to book appointment</p>
           {
-            state === 'Sign Up' &&  <diV className='w-full'>
+            state === 'Sign Up' &&  <div className='w-full'>
             <p>Full Name</p>
             <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="text" onChange={(e)=>setName(e.target.value)} value={name} required/>
-          </diV>
+          </div>
           }
-          <diV className='w-full'>
+          <div className='w-full'>
             <p>Email</p>
             <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="email" onChange={(e)=>setEmail(e.target.value)} value={email} required/>
-          </diV>
-          <diV className='w-full'>
+          </div>
+          <div className='w-full'>
             <p>Password</p>
             <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="password" onChange={(e)=>setPassword(e.target.value)} value={password} required/>
-          </diV>
+          </div>
           <button type='submit' className='bg-primary text-white w-full py-2 mt-1 rounded-md text-base'>{state === 'Sign Up' ? "Create Account" : "Login"}</button>
           {
             state === 'Sign Up'

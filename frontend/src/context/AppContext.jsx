@@ -12,6 +12,19 @@ const AppContextProvider = (props) => {
     const [token,setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : false)
     const [userData,setUserData] = useState(false)
 
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const userToken = localStorage.getItem('token')
+            setToken(userToken || false)
+        }
+
+        window.addEventListener('storage', handleStorageChange)
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange)
+        }
+    }, [])
+
     const getDoctorsData = async () => {
         try {
             

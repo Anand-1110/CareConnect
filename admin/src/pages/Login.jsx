@@ -4,8 +4,11 @@ import { AdminContext } from '../context/AdminContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { DoctorContext } from '../context/DoctorContext'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+
+    const navigate = useNavigate()  
 
     const [state,setState] = useState('Admin')
     const [email,setEmail] = useState('')
@@ -23,8 +26,15 @@ const Login = () => {
                  
                 const {data} = await axios.post(backendurl + '/api/admin/login', {email,password})
                 if(data.success) {
-                  localStorage.setItem('aToken',data.token)
-                  setAToken(data.token)
+
+                  // Remove Doctor login
+                  localStorage.removeItem('dToken');
+                  setDToken('');
+
+                  // Set Admin login
+                  localStorage.setItem("aToken", data.token);
+                  setAToken(data.token);
+                  navigate("/admin-dashboard");
                 } else {
                   toast.error(data.message)
                 }
@@ -33,16 +43,24 @@ const Login = () => {
 
                   const {data} = await axios.post(backendurl + '/api/doctor/login', {email,password})
                   if(data.success) {
-                  localStorage.setItem('dToken',data.token)
-                  setDToken(data.token)
-                  console.log(data.token)
-                } else {
+
+                    // Remove Admin login
+                    localStorage.removeItem("aToken");
+                    setAToken("");
+
+                    // Set Doctor login
+                    localStorage.setItem("dToken", data.token);
+                    setDToken(data.token);
+                    console.log(data.token);
+                    navigate("/doctor-dashboard");
+                  } else {
                   toast.error(data.message)
                 }
               }
 
         } catch (error) {
-
+            console.log(error)
+            toast.error(error.message)
         }
 
     }

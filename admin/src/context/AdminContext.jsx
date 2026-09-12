@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from 'axios';
 import {toast} from 'react-toastify'
 
@@ -7,9 +7,24 @@ export const AdminContext = createContext()
 const AdminContextProvider = (props) => {
 
         const [aToken,setAToken] = useState(localStorage.getItem('aToken') ? (localStorage.getItem('aToken')) : '')
+
         const [doctors,setDoctors] = useState([])
         const [appointments,setAppointments] = useState([])
         const [dashData,setDashData] = useState(false)
+
+        useEffect(() => {
+          const handleStorageChange = () => {
+            const token = localStorage.getItem("aToken");
+
+            setAToken(token || "");
+          };
+
+          window.addEventListener("storage", handleStorageChange);
+
+          return () => {
+            window.removeEventListener("storage", handleStorageChange);
+          };
+        }, []);
 
         const backendurl = import.meta.env.VITE_BACKEND_URL
 
